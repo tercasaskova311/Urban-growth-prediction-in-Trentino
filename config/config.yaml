@@ -1,0 +1,84 @@
+# Urban Growth Prediction Configuration
+
+# Study Area (Trentino region, Italy)
+study_area:
+  name: "Trentino"
+  bbox:  # [min_lon, min_lat, max_lon, max_lat]
+    - 10.4
+    - 45.7
+    - 12.0
+    - 47.1
+  epsg: 32632  # UTM Zone 32N
+
+# Time period for analysis
+time_period:
+  start_date: "2018-01-01"
+  end_date: "2023-12-31"
+  temporal_resolution: "monthly"  # monthly, quarterly, yearly
+
+# Sentinel-2 parameters
+sentinel2:
+  cloud_cover_threshold: 20  # Maximum cloud cover percentage
+  indices:
+    - "NDVI"  # Normalized Difference Vegetation Index
+    - "NDBI"  # Normalized Difference Built-up Index
+    - "NDWI"  # Normalized Difference Water Index
+  scale: 10  # Resolution in meters
+
+# OSM data parameters
+osm:
+  features:
+    - "buildings"
+    - "roads"
+    - "landuse"
+  network_types:
+    - "drive"
+    - "walk"
+
+# Mobility data parameters
+mobility:
+  sources:
+    - "facebook_movement"
+    - "google_mobility"
+  
+# Signal processing parameters
+signal_processing:
+  tile_size: 1000  # Size of each tile in meters
+  overlap: 100  # Overlap between tiles in meters
+  
+  # Trend detection
+  trend_detection:
+    method: "linear_regression"  # linear_regression, mann_kendall
+    significance_level: 0.05
+  
+  # Change detection
+  change_detection:
+    method: "bfast"  # bfast, cusum, pettitt
+    threshold: 0.3
+
+# Model parameters
+model:
+  type: "gradient_boosting"  # gradient_boosting, random_forest, neural_network
+  features:
+    - "ndvi_trend"
+    - "ndbi_trend"
+    - "building_density"
+    - "road_density"
+    - "mobility_index"
+  
+  # Training parameters
+  train_test_split: 0.8
+  validation_split: 0.2
+  
+  # XGBoost specific parameters
+  xgboost:
+    n_estimators: 100
+    max_depth: 6
+    learning_rate: 0.1
+
+# Output parameters
+output:
+  data_dir: "data"
+  results_dir: "results"
+  figures_dir: "figures"
+  format: "geotiff"  # geotiff, shapefile, csv
