@@ -1,0 +1,19 @@
+# config.yaml - single source of truth for the pipeline (non-secret params only)
+study_area:
+  name: "Trentino"
+  bbox: [10.3, 45.6, 11.5, 46.6]   # minx, miny, maxx, maxy (WGS84)
+  epsg: 4326
+
+time_period:
+  start_date: "2018-01-01"
+  end_date: "2025-09-30"
+  temporal_resolution: "monthly"   # monthly | quarterly | yearly
+
+sentinel2:
+  cloud_cover_threshold: 15
+  scale: 10                       # meters
+  indices: ["NDVI", "NDWI"]
+
+output:
+  data_dir: "data/sentinel2"
+  format: "GeoTIFF"
